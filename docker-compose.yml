@@ -1,0 +1,61 @@
+services:
+  # Backend API
+  backend:
+    build:
+      context: ./digimart_backend
+      dockerfile: Dockerfile
+    image: sanjeetthakur1999/digimart_docker_repo:digimart-backend
+    container_name: digimart-backend
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    env_file:
+      - ./digimart_backend/.env
+    networks:
+      - digimart-network
+    volumes:
+      - ./digimart_backend/:/app
+      - /app/node_modules
+    depends_on:
+      - mongodb
+
+  # Frontend
+  frontend:
+    build:
+      context: ./digimart_frontend
+      dockerfile: Dockerfile
+    image: sanjeetthakur1999/digimart_docker_repo:digimart-frontend
+    container_name: digimart-frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+    networks:
+      - digimart-network
+    volumes:
+      - ./digimart_frontend/:/app
+      - /app/node_modules
+
+# MongoDB Database
+
+  mongodb:
+    image: mongo:5.0
+    container_name: digimart_mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: digimart
+      MONGO_INITDB_ROOT_PASSWORD: qwerty1234
+    volumes:
+      - digimart_volume:/data/db
+    networks:
+      - digimart-network
+
+volumes:
+  digimart_volume:
+
+networks:
+  digimart-network:
+    driver: bridge
