@@ -65,12 +65,14 @@ export const login = async (req,res)=>{
             email: user.UserEmail,
             role: user.UserRole
         };
-
         const token = generateToken(payload);
-        
+        logger.info("JWT token created successfully");
+        logger.debug(token);
         user.UserPassword = undefined;
+        logger.info("User password removed from user object");
+        logger.debug(user);
 
-        logger.info("User logged in successfully: " + loginEMail);
+
         
         return res.status(200).json({
             success: true, 
