@@ -4,6 +4,8 @@ import pinoCaller from "pino-caller";
 let logger;
 
 const environment = process.env.NODE_ENV;
+// console.log("environment",environment);
+// const environment = "production";
 let level;
 if (environment === 'development') {
   level = "debug"
@@ -16,7 +18,7 @@ else{
 const pinoInstance = pino({
   level: level,
   transport: {
-    targets: [ 
+    targets: [
       {
         // Target 1: Pretty, colored logs to the console
         target: 'pino-pretty',
@@ -25,6 +27,8 @@ const pinoInstance = pino({
           colorize: true,
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss',
           ignore: 'pid,hostname',
+          messageFormat: '{msg}'
+
         },
       },
       {
@@ -35,6 +39,7 @@ const pinoInstance = pino({
           colorize: false,
           translateTime: 'SYS:yyyy-mm-dd HH:MM:ss',
           ignore: 'pid,hostname',
+          messageFormat: '{msg}',
           destination: 'app.log',
           mkdir: true, // Create the file if it does not exist
         },
@@ -42,6 +47,6 @@ const pinoInstance = pino({
     ],
   },
 });
-logger = pinoInstance;
+logger = pinoCaller(pinoInstance);
 
-export default logger; 
+export default logger;

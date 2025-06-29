@@ -2,7 +2,7 @@ services:
   # Backend API
   backend:
     build:
-      context: ./digimart_backend
+      context: ./backend_digimart
       dockerfile: Dockerfile
     image: sanjeetthakur1999/digimart_docker_repo:digimart-backend
     container_name: digimart-backend
@@ -10,11 +10,11 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - ./digimart_backend/.env
+      - ./backend_digimart/.env
     networks:
       - digimart-network
     volumes:
-      - ./digimart_backend/:/app
+      - ./backend_digimart/:/app
       - /app/node_modules
     depends_on:
       - mongodb
@@ -22,7 +22,7 @@ services:
   # Frontend
   frontend:
     build:
-      context: ./digimart_frontend
+      context: ./frontend_digimart
       dockerfile: Dockerfile
     image: sanjeetthakur1999/digimart_docker_repo:digimart-frontend
     container_name: digimart-frontend
@@ -34,7 +34,7 @@ services:
     networks:
       - digimart-network
     volumes:
-      - ./digimart_frontend/:/app
+      - ./frontend_digimart/:/app
       - /app/node_modules
 
 # MongoDB Database
