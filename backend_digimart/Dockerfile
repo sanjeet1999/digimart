@@ -17,6 +17,7 @@ RUN npm install
 EXPOSE 5000
 
 # 7. The command to start your server 
-CMD [ "npm", "run", "dev" ]
+CMD ["npm", "run", "dev"]
+# CMD sh -c "ls -la && npm run dev"  This is to run ls -al and npm run dev in one command
 # Or if you don't have an
 #CMD ["/bin/sh"]
