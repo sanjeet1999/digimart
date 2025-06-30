@@ -32,6 +32,34 @@ const addProduct = async (req,res)=>{
     }
 }
     
+const updateProduct = async (req,res) => {
+    const {id} = req.params;
+    const {prodName,ProdDiscription,ProdQuantity,ProdImage,price,Prodcategory} = req.body
+    logger.info(`Product update request received for id: ${id}`);
+    logger.debug(req.body);
+    try {
+        const updatedProduct = await Product.findByIdAndUpdate(id,{
+            prodName,
+            ProdDiscription,
+            ProdQuantity,
+            ProdImage,
+            price,
+            Prodcategory
+        },{new:true})
 
+        if(!updatedProduct){
+            logger.error("Product not found for update");
+            return res.status(404).json({success:false,message:"Product not found"});
+        }
+        logger.info("Product updated successfully");
+        logger.debug(updatedProduct);
+        res.status(200).json({success:true,message:"Product updated successfully",data:updatedProduct});
 
-export default addProduct
+    } catch (error) {
+        logger.error("Error updating product",error);
+        res.status(500).json({success:false,message:"Internal server error"});
+    }
+}
+
+export {addProduct, updateProduct}
+
